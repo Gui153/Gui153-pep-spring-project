@@ -24,8 +24,56 @@ public class MessageService {
             return ResponseEntity.status(400).body("Client error");
         }
 
+        return ResponseEntity.status(200).body(messageRepository.save(msg));
+    }
+
+    public ResponseEntity getMsg(){
+
+        return ResponseEntity.status(200).body(messageRepository.findAll());
+    }
+
+    public ResponseEntity getMsgById(int id){
+
+        Optional<Message> msg = messageRepository.findById(id);
+        if(msg.isEmpty()){
+            return ResponseEntity.status(200).body("");
+        }
+        return ResponseEntity.status(200).body(msg.get());
+    }
+
+    public ResponseEntity deleteMsgById(int id){
+
+        Optional<Message> msg = messageRepository.findById(id);
+        if(msg.isEmpty()){
+            return ResponseEntity.status(200).body("");
+        }
+        messageRepository.deleteById(id);
+        
+        
+        return ResponseEntity.status(200).body("1");
+    }
+
+    public ResponseEntity patchMsgById(int id, Message updateMsg){
+
+        Optional<Message> check = messageRepository.findById(id);
+        
+        if(check.isEmpty()){
+            return ResponseEntity.status(400).body("Client error");
+        }
+
+        Message originalMsg = check.get();
+        originalMsg.setMessageText(updateMsg.getMessageText());
+        messageRepository.save(originalMsg);
         
 
-        return ResponseEntity.status(200).body(messageRepository.save(msg));
+        return ResponseEntity.status(200).body("1");
+    }
+
+    public ResponseEntity getMsgByUserId(int userId){
+
+
+
+        return ResponseEntity.status(200).body(messageRepository.findAllByPostedBy(userId));
+
     }
 }

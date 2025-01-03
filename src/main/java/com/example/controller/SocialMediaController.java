@@ -49,13 +49,62 @@ public class SocialMediaController {
     public ResponseEntity postMessage(@RequestBody Message msg){
         
         //you will need to change the method's parameters and return the extracted path variable.
-        System.out.println("in msg controler");
-        System.out.println(msg);
+        //System.out.println("in msg controler");
+        //System.out.println(msg);
         if(msg.getMessageText().length() >255 || msg.getMessageText().isEmpty()){
             return ResponseEntity.status(400).body("Client error");
         }
         return msgService.createMsg(msg);
     }
-    
 
+    @GetMapping(value="/messages")
+    public ResponseEntity getMessage(){
+        
+        //you will need to change the method's parameters and return the extracted path variable.
+        // System.out.println("in msg controler");
+        
+        
+        return msgService.getMsg();
+    }
+
+    @GetMapping(value="/messages/{messageId}")
+    public ResponseEntity getMessageById(@PathVariable int messageId){
+        
+        //you will need to change the method's parameters and return the extracted path variable.
+        //System.out.println("in msg controler");
+        
+        
+        return msgService.getMsgById(messageId);
+    }
+    @DeleteMapping(value="/messages/{messageId}")
+    public ResponseEntity deleteMessageById(@PathVariable int messageId){
+        
+        //you will need to change the method's parameters and return the extracted path variable.
+        //System.out.println("in msg controler");
+        
+        
+        return msgService.deleteMsgById(messageId);
+    }
+
+    @PatchMapping(value="/messages/{messageId}")
+    public ResponseEntity patchMessageById(@PathVariable int messageId, @RequestBody Message msg){
+        
+        //you will need to change the method's parameters and return the extracted path variable.
+        //System.out.println("in msg controler");
+        if(msg.getMessageText().length() >255 || msg.getMessageText().isEmpty()){
+            return ResponseEntity.status(400).body("Client error");
+        }
+        
+        return msgService.patchMsgById(messageId, msg);
+    }
+
+    @GetMapping(value="/accounts/{accountId}/messages")
+    public ResponseEntity getMessageByUserId(@PathVariable int accountId){
+        
+        //you will need to change the method's parameters and return the extracted path variable.
+        System.out.println("in msg controler");
+        
+        System.out.println(accountId);
+        return msgService.getMsgByUserId(accountId);
+    }
 }
